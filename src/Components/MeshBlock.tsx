@@ -4,15 +4,16 @@ function MeshBlock({type, position} : {type: any, position: any}) {
     return (<Html position={position}>
         <div
             style={{
-                justifyContent: 'center',
-                alignItems: 'center',
+                fontSize: '20px',
                 textAlign: 'center',
-                fontSize: '15px',
+                fontFamily: 'Impact',
                 color: 'white',
-                background: 'rgba(0, 0, 0, 0.5)',
-                border: '10px',
-                borderRadius: '5px',
-                padding: '10px 10px 10px 10px',
+                border: '3px solid',
+                width: '100%',
+                borderRadius: '10px',
+                borderColor: 'white',
+                padding: '5px 5px 5px 5px',
+                whiteSpace: 'nowrap',
             }}
         >
             {type}

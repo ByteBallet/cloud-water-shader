@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState, useEffect } from 'react';
+import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { Canvas, useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls, Cloud } from '@react-three/drei';
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib';
@@ -57,9 +57,9 @@ function MovingCloud({ initialPosition, mx, mz }: any) {
 
   useFrame((state, delta) => {
     setPosition((prevPosition:any) => [
-      prevPosition[0] + mx* 0.1,
+      prevPosition[0] + mx* 0.02,
       prevPosition[1] + delta * 10,
-      prevPosition[2] + mz* 0.1,
+      prevPosition[2] + mz* 0.02,
     ]);
     setOpacity((prevOpacity:any) => prevOpacity - 0.3 * delta);
   });
@@ -70,11 +70,17 @@ function MovingCloud({ initialPosition, mx, mz }: any) {
 function BackCloud({ initialPosition, mx, mz, opacity, scale }: any) {
   const [position, setPosition] = useState(initialPosition);
   useFrame(() => {
-    setPosition((prevPosition:any) => [
-      prevPosition[0] + mx* 0.01,
-      prevPosition[1],
-      prevPosition[2] + mz* 0.01,
-    ]);
+    setPosition((prevPosition:any) => {
+      if(prevPosition[0] < -160 || prevPosition[2] < -100){
+        prevPosition[0] = 100 + initialPosition[0];
+        prevPosition[2] = 60 + initialPosition[2];
+      }
+      return [
+        prevPosition[0] - mx* 0.01,
+        prevPosition[1],
+        prevPosition[2] + mz* 0.01,
+      ]
+    });
   });
 
   return <Cloud position={position} opacity={opacity} speed={0} scale={scale} castShadow/>;
@@ -101,7 +107,6 @@ const Controls = () => {
 
         const minBound = new THREE.Vector3(-(240-w)/2, 50, -(135-h)/2);
         const maxBound = new THREE.Vector3((240-w)/2, 70, (135-h)/2);
-        // Check if camera position is outside the boundary
         if (
           cameraPosition.x < minBound.x ||
           cameraPosition.x > maxBound.x ||
@@ -109,11 +114,15 @@ const Controls = () => {
           cameraPosition.y > maxBound.y ||
           cameraPosition.z < minBound.z ||
           cameraPosition.z > maxBound.z
-        ) {
-          // Move camera position back within the boundary
+        ){
           cameraPosition.clamp(minBound, maxBound);
           camera.position.copy(cameraPosition);
           controls.target.copy(cameraPosition.clone().add(cameraDirection));
+          if (cameraPosition.y >= maxBound.y) {
+            controls.enableZoom = false;
+          } else {
+            controls.enableZoom = true;
+          }
           controls.update();
         }
       });
@@ -139,29 +148,29 @@ const Controls = () => {
 
 const backCloudPosition = [
   {
-    position: [-100, 10, -15],
-    opacity: 0.8,
-    scale: [2, 3, 3],
+    position: [100, 10, 40],
+    opacity: 0.5,
+    scale: [3, 3, 3],
   },
   {
-    position: [-150, 5, -20],
-    opacity: 1,
-    scale: [2, 1, 2],
+    position: [60, 7, 50],
+    opacity: 0.5,
+    scale: [4, 4, 4],
   },
   {
-    position: [-130, 7, -10],
-    opacity: 1,
-    scale: [1, 1, 3],
-  },
-  {
-    position: [-20, 11, 20],
+    position: [-30, 7, 40],
     opacity: 0.7,
-    scale: [3, 2, 2],
+    scale: [3, 3, 3],
   },
   {
-    position: [30, 6, 10],
-    opacity: 0.9,
-    scale: [3, 1, 2],
+    position: [-10, 8, 30],
+    opacity: 0.5,
+    scale: [5, 5, 5],
+  },
+  {
+    position: [0, 6, 35],
+    opacity: 0.7,
+    scale: [4, 4, 4],
   },
 ];
 
@@ -204,8 +213,22 @@ const MeshBlockLocation = [
   },
 ];
 
+const PlaneMesh = React.memo(({ material }: { material: THREE.MeshBasicMaterial}) => {
+  return (
+    <>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 2, 0]} receiveShadow>
+        <planeGeometry args={[240, 135]} />
+        <primitive object={material} attach="material" />
+      </mesh>
+      <Plane position={new THREE.Vector3(-100, 6, 25)} shadow={false}/>
+      <Plane position={new THREE.Vector3(-110, 3, 35)} shadow={true}/>
+    </>
+  );
+}, (prevProps, nextProps) => {
+  return true;
+});
+
 function App() {
-  const [textureLoaded, setTextureLoaded] = useState(false);
   const textureLoader = new THREE.TextureLoader();
   const textureUrl = 'island-2400w.png';
   const material = new THREE.MeshBasicMaterial({
@@ -221,25 +244,16 @@ function App() {
       texture.wrapS = THREE.RepeatWrapping;
       texture.wrapT = THREE.RepeatWrapping;
       texture.colorSpace = THREE.SRGBColorSpace;
-
       material.map = texture;
       material.needsUpdate = true;
-
-      setTextureLoaded(true);
     });
   }, [textureLoader, textureUrl]);
 
   return (
     <div>
-      <Canvas camera={{ position: [0, 60, 0] }} shadows>
-        <pointLight intensity={1} position={[0, 130, 0]} castShadow />
-        <Plane position={new THREE.Vector3(-100, 20, 25)} />
-        <Plane position={new THREE.Vector3(-100, 30, 55)} />        
-
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 2, 0]} receiveShadow>
-          <planeGeometry args={[240, 135]} />
-          <primitive object={material} attach="material" />
-        </mesh>
+      <Canvas camera={{ position: [0, 70, 0] }} shadows>
+        <pointLight intensity={1} position={[0, 150, 0]} castShadow />
+        <PlaneMesh material={material}/>
         {
           cloudLocation.map((cloud) => {
             return <MovingCloud initialPosition={cloud.position} mx={cloud.mx} mz={cloud.mz} />;
@@ -255,10 +269,10 @@ function App() {
             return (
               <mesh
                 onPointerOver={ () => ( block.id !== selection && setSelection(block.id)) }
-                onPointerLeave={() => setSelection(-1)}
+                onPointerLeave={() => {setSelection(-1)}}
                 rotation={[-Math.PI / 2, 0, 0]}
                 position={new THREE.Vector3(block.position[0]-120, 1, block.position[2]-67.5)}
-                material={new THREE.MeshStandardMaterial({ color: 0})}>
+                material={new THREE.MeshStandardMaterial({ color: 0 })}>
                   <planeGeometry args={[block.area[0], block.area[1]]}/>
               </mesh>
             );
@@ -267,7 +281,7 @@ function App() {
         {
           MeshBlockLocation.map((block) => {
             if(block.id === selection)
-              return <MeshBlock position={[block.position[0]-120, 5, block.position[2]-67.5]} type={block.name} />
+              return <MeshBlock position={[block.position[0]-150, 3, block.position[2]-80]} type={block.name} />
           })
         }
         <Ocean />
