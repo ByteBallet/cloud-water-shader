@@ -1,24 +1,25 @@
-import { Html } from '@react-three/drei';
+import * as THREE from 'three';
+import { useMemo } from 'react';
 
-function MeshBlock({type, position} : {type: any, position: any}) {
-    return (<Html position={position}>
-        <div
-            style={{
-                fontSize: '20px',
-                textAlign: 'center',
-                fontFamily: 'Impact',
-                color: 'white',
-                border: '3px solid',
-                width: '100%',
-                borderRadius: '10px',
-                borderColor: 'white',
-                padding: '5px 5px 5px 5px',
-                whiteSpace: 'nowrap',
-            }}
+function MeshBlock({type, position, size, flag, mouseHoverFlag} : {type: any, position: any, size: any, flag: any,mouseHoverFlag: any}) {
+    
+    const textureMat = useMemo(() => {
+        const loader = new THREE.TextureLoader();
+        const texture = loader.load(type + (mouseHoverFlag ? '-hover.png' : '.png'));
+        const material_one = new THREE.MeshPhongMaterial();
+        material_one.map = texture;
+        material_one.transparent = true;
+        return material_one;
+    }, [mouseHoverFlag]);
+
+    return (
+        <mesh 
+            position={[position[0] + flag[0] * size[0]/2, position[1] - flag[1] * size[1] /2, position[2]]} 
+            material={textureMat}
         >
-            {type}
-        </div>
-    </Html>);
+            <planeGeometry args={size}/>
+        </mesh>
+    );
 }
 
 export default MeshBlock;
