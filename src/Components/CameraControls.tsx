@@ -19,8 +19,8 @@ export const Controls = (props: any) => {
             
             const h = 2 * Math.tan(camera.fov * Math.PI / 360) * target.distance;
             const w = h * camera.aspect;
-            const minBound = new THREE.Vector3(-(240-w)/2, -(135-h)/2, 0);
-            const maxBound = new THREE.Vector3((240-w)/2, (135-h)/2, 0);
+            const minBound = new THREE.Vector3(-(384-w)/2, -(255-h)/2, 0);
+            const maxBound = new THREE.Vector3((384-w)/2, (255-h)/2, 0);
         
             const boundary = new THREE.Box3( minBound, maxBound );
             controls.setBoundary(boundary);
@@ -32,9 +32,9 @@ export const Controls = (props: any) => {
         ref={ref} 
         args={[camera, gl.domElement]}
         
-        minDistance={50}
-        maxDistance={70} 
-        distance={70}
+        minDistance={70}
+        maxDistance={110}
+        distance={110}
         {...props} 
         dollyToCursor={true}
         dollySpeed={0.5}
