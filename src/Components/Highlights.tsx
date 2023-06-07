@@ -30,7 +30,7 @@ export const Highlights = () => {
         }
         {
           meshBlockLocation.map((block, index) => {
-              return <MeshBlock key={index} position={[block.position[0]-192, 127.5-block.position[1], 3]}
+              return <MeshBlock key={index} position={[block.position[0]-192, 127.5-block.position[1], 5]}
                 type={block.name} size={block.size} flag={block.flag}
                 mouseHoverFlag={block.id === selection}/>
           })
