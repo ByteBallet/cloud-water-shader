@@ -231,7 +231,7 @@ Reflector.ReflectorShader = {
 
 	vertexShader: /* glsl */`
 		uniform mat4 textureMatrix;
-		varying vec4 vUv;
+		varying vec2 vUv;
 
 		#include <common>
 		#include <logdepthbuf_pars_vertex>
@@ -249,7 +249,7 @@ Reflector.ReflectorShader = {
 	fragmentShader: /* glsl */`
 		uniform vec3 color;
 		uniform sampler2D tDiffuse;
-		varying vec4 vUv;
+		varying vec2 vUv;
 		uniform vec2 iResolution;
 		uniform float iTime;
 
@@ -295,17 +295,17 @@ Reflector.ReflectorShader = {
 			col.rgb=vec3(smoothstep(.1,.3,f));
 			fragColor = vec4(col,1);
 			
-			// float threshold = 0.8; // Adjust this threshold value as needed
-			// if (fragColor.r < threshold && fragColor.g < threshold && fragColor.b < threshold) {
-			// 	fragColor.a = 0.0; // Set alpha to 0 for transparent color
-			// }
+			float threshold = 0.8; // Adjust this threshold value as needed
+			if (fragColor.r < threshold && fragColor.g < threshold && fragColor.b < threshold) {
+				fragColor.a = 0.0; // Set alpha to 0 for transparent color
+			}
 		}
 
 		void main() {
 
 			#include <logdepthbuf_fragment>
 
-			vec2 fragCoord = vUv;
+			vec2 fragCoord = vUv.xy;
 			vec4 fragColor;
 			mainImage(fragColor, fragCoord);
 			gl_FragColor = fragColor;
