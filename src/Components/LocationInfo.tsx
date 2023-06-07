@@ -43,26 +43,26 @@ export const cloudLocation = [
 
 export const backCloudPosition = [
   {
-    position: [190, -40, 3],
-    initialPos: [210, -20, 3],
+    position: [190, -40, 2],
+    initialPos: [210, -20, 2],
     opacity: 0.5,
     scale: [10, 10, 5],
   },
   {
-    position: [100, 50, 3],
-    initialPos: [210, -20, 3],
+    position: [100, 50, 2],
+    initialPos: [210, -20, 2],
     opacity: 0.5,
     scale: [8, 10, 5],
   },
   {
-    position: [0, -130, 3],
-    initialPos: [-20, -150, 3],
+    position: [0, -130, 2],
+    initialPos: [-20, -150, 2],
     opacity: 0.5,
     scale: [8, 8, 1],
   },
   {
-    position: [-80, -50, 3],
-    initialPos: [-20, -150, 3],
+    position: [-80, -50, 2],
+    initialPos: [-20, -150, 2],
     opacity: 0.5,
     scale: [8, 8, 1],
   },
@@ -70,23 +70,23 @@ export const backCloudPosition = [
 
 export const fixedClouds = [
   {
-    position: [-140, -100, 6],
+    position: [-140, -100, 2],
     opacity: 0.6,
     scale:[10, 8, 1],
   },
   {
-    position: [-140, 80, 6],
-    opacity: 0.6,
+    position: [-140, 80, 2],
+    opacity: 0.8,
     scale:[6, 4, 1],
   },
   {
-    position: [160, 90, 6],
+    position: [160, 90, 2],
     opacity: 0.6,
     scale:[8, 6, 1],
   },
   {
-    position: [80, -20, 6],
-    opacity: 0.6,
+    position: [80, -30, 2],
+    opacity: 0.8,
     scale:[6, 4, 1],
   },
 ];
