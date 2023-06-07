@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { SparkleLight } from "./Object/Light.js";
+import { Reflector } from "./Object/Light.js";
 
 export const Ocean = () => {
   const { scene } = useThree();
@@ -15,7 +15,7 @@ export const Ocean = () => {
 
   useEffect(() => {
     const waterGeometry = new THREE.PlaneGeometry(384, 255);
-    const water = new SparkleLight(waterGeometry, {
+    const water = new Reflector(waterGeometry, {
         textureWidth: 1024,
         textureHeight: 1024,
         clipBias: 0,

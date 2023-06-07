@@ -22,7 +22,7 @@ function App() {
         <BackgroundClouds />
         <Highlights />
 
-        <CustomShaderMaterial position={[0,0,1]}/>
+        {/* <CustomShaderMaterial position={[0,0,1]}/> */}
         <Ocean />
 
         {/* <SparkleLight /> */}

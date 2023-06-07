@@ -23,8 +23,8 @@ export const ZoomInClouds = () => {
     return (
         <>
         {
-            cloudLocation.map((cloud) => {
-                return <MovingCloud initialPosition={cloud.position} mx={cloud.mx} mz={cloud.mz} />;
+            cloudLocation.map((cloud, index) => {
+                return <MovingCloud key={index} initialPosition={cloud.position} mx={cloud.mx} mz={cloud.mz} />;
             })
         }
         </>

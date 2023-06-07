@@ -15,7 +15,7 @@ import {
 	LinearSRGBColorSpace
 } from 'three';
 
-class SparkleLight extends Mesh {
+class Reflector extends Mesh {
 
 	constructor( geometry, options = {} ) {
 
@@ -34,7 +34,7 @@ class SparkleLight extends Mesh {
 		const clipBias = options.clipBias || 0;
 		const shader = options.shader || Reflector.ReflectorShader;
 		const multisample = ( options.multisample !== undefined ) ? options.multisample : 4;
-		const iResolution = options.iResolution;
+		const iResolution = options.iResolution || [500, 300];
 
 		//
 
@@ -115,7 +115,6 @@ class SparkleLight extends Mesh {
 				0.0, 0.0, 0.5, 0.5,
 				0.0, 0.0, 0.0, 1.0
 			);
-
 			textureMatrix.multiply( virtualCamera.projectionMatrix );
 			textureMatrix.multiply( virtualCamera.matrixWorldInverse );
 			textureMatrix.multiply( scope.matrixWorld );
@@ -203,7 +202,7 @@ class SparkleLight extends Mesh {
 
 }
 
-SparkleLight.ReflectorShader = {
+Reflector.ReflectorShader = {
 
 	name: 'ReflectorShader',
 
@@ -222,7 +221,7 @@ SparkleLight.ReflectorShader = {
 		},
 
 		'iResolution': { 
-			value: null
+			value: new Vector2(500, 300)
 		},
 		
 		'iTime': {
@@ -239,7 +238,7 @@ SparkleLight.ReflectorShader = {
 
 		void main() {
 
-			vUv = textureMatrix * vec4( position, 1.0 );
+			vUv = uv;
 
 			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
@@ -284,6 +283,8 @@ SparkleLight.ReflectorShader = {
 
 		void mainImage( out vec4 fragColor, in vec2 fragCoord )
 		{
+			vec2 uv = fragCoord / iResolution.xy;
+
 			vec3 col = 0.5 + 0.5*cos(iTime+uv.xyx+vec3(0,2,4));
 
 			float ftime= float(iTime)/10.;
@@ -294,17 +295,17 @@ SparkleLight.ReflectorShader = {
 			col.rgb=vec3(smoothstep(.1,.3,f));
 			fragColor = vec4(col,1);
 			
-			float threshold = 0.8; // Adjust this threshold value as needed
-			if (fragColor.r < threshold && fragColor.g < threshold && fragColor.b < threshold) {
-				fragColor.a = 0.0; // Set alpha to 0 for transparent color
-			}
+			// float threshold = 0.8; // Adjust this threshold value as needed
+			// if (fragColor.r < threshold && fragColor.g < threshold && fragColor.b < threshold) {
+			// 	fragColor.a = 0.0; // Set alpha to 0 for transparent color
+			// }
 		}
 
 		void main() {
 
 			#include <logdepthbuf_fragment>
 
-			vec2 fragCoord = vUv.xy;
+			vec2 fragCoord = vUv;
 			vec4 fragColor;
 			mainImage(fragColor, fragCoord);
 			gl_FragColor = fragColor;
@@ -315,4 +316,4 @@ SparkleLight.ReflectorShader = {
 		}`
 };
 
-export { SparkleLight };
+export { Reflector };

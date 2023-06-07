@@ -8,9 +8,10 @@ export const Highlights = () => {
     return (
         <>
         {
-          meshBlockLocation.map((block) => {
+          meshBlockLocation.map((block, index) => {
             return (
               <mesh
+                key={index}
                 onPointerOver={ () => ( block.id !== selection && setSelection(block.id)) }
                 onPointerLeave={() => {setSelection(-1)}}
                 position={new THREE.Vector3(block.position[0]-192, 127.5-block.position[1], -1)}
@@ -21,8 +22,8 @@ export const Highlights = () => {
           })
         }
         {
-          meshBlockLocation.map((block) => {
-              return <MeshBlock position={[block.position[0]-192, 127.5-block.position[1], 2]}
+          meshBlockLocation.map((block, index) => {
+              return <MeshBlock key={index} position={[block.position[0]-192, 127.5-block.position[1], 2]}
                 type={block.name} size={block.size} flag={block.flag}
                 mouseHoverFlag={block.id === selection}/>
           })

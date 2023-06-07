@@ -27,8 +27,8 @@ export const BackgroundClouds = () => {
     return (
         <>
         {
-          backCloudPosition.map((cloud) => {
-            return <BackCloud cloud={cloud} />;
+          backCloudPosition.map((cloud, index) => {
+            return <BackCloud key={index} cloud={cloud} />;
           })
         }
         </>
