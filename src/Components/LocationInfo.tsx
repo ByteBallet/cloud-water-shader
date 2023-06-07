@@ -45,25 +45,25 @@ export const backCloudPosition = [
     {
       position: [190, -40, 3],
       initialPos: [210, -20, 3],
-      opacity: 0.5,
+      opacity: 0.3,
       scale: [10, 10, 5],
     },
     {
       position: [100, 50, 3],
       initialPos: [210, -20, 3],
-      opacity: 0.5,
+      opacity: 0.3,
       scale: [10, 10, 5],
     },
     {
       position: [0, -130, 3],
       initialPos: [-20, -150, 3],
-      opacity: 0.5,
+      opacity: 0.3,
       scale: [8, 8, 1],
     },
     {
       position: [-80, -50, 3],
       initialPos: [-20, -150, 3],
-      opacity: 0.5,
+      opacity: 0.3,
       scale: [8, 8, 1],
     },
 ];

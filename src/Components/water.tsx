@@ -1,17 +1,11 @@
 import { useRef, useEffect } from "react";
-import { useThree } from "@react-three/fiber";
+import { useThree, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { Reflector } from "./Object/Light.js";
+import { Reflector } from "./Light.js";
 
 export const Ocean = () => {
   const { scene } = useThree();
-
-  const params = {
-    color: "#ffffff",
-    scale: 2,
-    flowX: 0.1,
-    flowY: -0.1,
-  };
+  const waterRef = useRef();
 
   useEffect(() => {
     const waterGeometry = new THREE.PlaneGeometry(384, 255);
@@ -19,11 +13,13 @@ export const Ocean = () => {
         textureWidth: 1024,
         textureHeight: 1024,
         clipBias: 0,
-        iResolution: new THREE.Vector2(500,300),
+        iResolution: new THREE.Vector2(50,30),
+        itime: 0,
     });
 
     water.position.z = 1;
 
+    waterRef.current = water;
     scene.add(water);
 
     // Cleanup
@@ -31,6 +27,13 @@ export const Ocean = () => {
       scene.remove(water);
     };
   }, []);
+  
+  useFrame((_state, delta) => {
+    if (waterRef.current) {
+      const waterMaterial = waterRef.current.material;
+      waterMaterial.uniforms.iTime.value += delta*2;
+    }
+  });
 
   return null; // or any other React Three.js components you want to render alongside the water
 };

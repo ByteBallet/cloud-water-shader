@@ -35,7 +35,6 @@ class Reflector extends Mesh {
 		const shader = options.shader || Reflector.ReflectorShader;
 		const multisample = ( options.multisample !== undefined ) ? options.multisample : 4;
 		const iResolution = options.iResolution || [500, 300];
-
 		//
 
 		const reflectorPlane = new Plane();
@@ -59,7 +58,8 @@ class Reflector extends Mesh {
 			name: ( shader.name !== undefined ) ? shader.name : 'unspecified',
 			uniforms: UniformsUtils.clone( shader.uniforms ),
 			fragmentShader: shader.fragmentShader,
-			vertexShader: shader.vertexShader
+			vertexShader: shader.vertexShader,
+			transparent: true,
 		} );
 
 		material.uniforms[ 'tDiffuse' ].value = renderTarget.texture;
@@ -119,8 +119,6 @@ class Reflector extends Mesh {
 			textureMatrix.multiply( virtualCamera.matrixWorldInverse );
 			textureMatrix.multiply( scope.matrixWorld );
 
-			// Now update projection matrix with new clip plane, implementing code from: http://www.terathon.com/code/oblique.html
-			// Paper explaining this technique: http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
 			reflectorPlane.setFromNormalAndCoplanarPoint( normal, reflectorWorldPosition );
 			reflectorPlane.applyMatrix4( virtualCamera.matrixWorldInverse );
 
@@ -133,16 +131,13 @@ class Reflector extends Mesh {
 			q.z = - 1.0;
 			q.w = ( 1.0 + projectionMatrix.elements[ 10 ] ) / projectionMatrix.elements[ 14 ];
 
-			// Calculate the scaled plane vector
 			clipPlane.multiplyScalar( 2.0 / clipPlane.dot( q ) );
 
-			// Replacing the third row of the projection matrix
 			projectionMatrix.elements[ 2 ] = clipPlane.x;
 			projectionMatrix.elements[ 6 ] = clipPlane.y;
 			projectionMatrix.elements[ 10 ] = clipPlane.z + 1.0 - clipBias;
 			projectionMatrix.elements[ 14 ] = clipPlane.w;
 
-			// Render
 			scope.visible = false;
 
 			const currentRenderTarget = renderer.getRenderTarget();
@@ -221,7 +216,7 @@ Reflector.ReflectorShader = {
 		},
 
 		'iResolution': { 
-			value: new Vector2(500, 300)
+			value: new Vector2(50, 30)
 		},
 		
 		'iTime': {
@@ -238,7 +233,7 @@ Reflector.ReflectorShader = {
 
 		void main() {
 
-			vUv = uv;
+			vUv= vec2(textureMatrix * inverse(modelViewMatrix) * vec4(position, 1.0)); 
 
 			gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
