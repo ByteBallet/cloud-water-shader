@@ -12,10 +12,17 @@ export const Highlights = () => {
             return (
               <mesh
                 key={index}
-                onPointerOver={ () => ( block.id !== selection && setSelection(block.id)) }
-                onPointerLeave={() => {setSelection(-1)}}
+                onPointerOver={ () => {
+                  block.id !== selection && setSelection(block.id);
+                  document.body.style.cursor='pointer'; 
+                } }
+                onPointerLeave={() => {
+                  setSelection(-1);
+                  document.body.style.cursor='auto';
+                } }
                 position={new THREE.Vector3(block.position[0]-192, 127.5-block.position[1], -1)}
-                material={new THREE.MeshStandardMaterial({ color: 0 })}>
+                material={new THREE.MeshStandardMaterial({ color: 0 })}
+                >
                   <planeGeometry args={[block.area[0], block.area[1]]}/>
               </mesh>
             );

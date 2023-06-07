@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Cloud } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { backCloudPosition } from './LocationInfo';
+import { backCloudPosition, fixedClouds } from './LocationInfo';
 
 function BackCloud({ cloud }: any) {
     const [pos, setPosition] = useState(cloud.position);
@@ -29,6 +29,11 @@ export const BackgroundClouds = () => {
         {
           backCloudPosition.map((cloud, index) => {
             return <BackCloud key={index} cloud={cloud} />;
+          })
+        }
+        {
+          fixedClouds.map((cloud, index) => {
+            return <Cloud key={index} position={cloud.position} scale={cloud.scale} opacity={cloud.opacity} speed={0} />
           })
         }
         </>
