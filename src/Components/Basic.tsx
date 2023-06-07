@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import * as THREE from 'three';
 import { Plane } from './plane';
 import { planeLocation, planeShadowLocation } from './LocationInfo';
+import { Island } from './Island';
 
 export const BasicBack = React.memo(() => {
     const material = new THREE.MeshBasicMaterial({
@@ -27,6 +28,7 @@ export const BasicBack = React.memo(() => {
         <mesh position={[0, 0, 0]} material={material}>
             <planeGeometry args={[384, 255]} />
         </mesh>
+        <Island />
 
         <Plane position={new THREE.Vector3(planeLocation.x, planeLocation.y, planeLocation.z)} shadow={false}/>
         <Plane position={new THREE.Vector3(planeShadowLocation.x, planeShadowLocation.y, planeShadowLocation.z)} shadow={true}/>

@@ -7,6 +7,7 @@ export const Plane = ({ position, shadow }: { position: THREE.Vector3, shadow: b
     const textureMat = useMemo(() => {
         const loader = new THREE.TextureLoader();
         const texture = loader.load( shadow ? 'plane_shadow.png' : 'plane.png');
+        texture.colorSpace = THREE.SRGBColorSpace;
 
         const material_one = new THREE.MeshPhongMaterial();
         material_one.map = texture;

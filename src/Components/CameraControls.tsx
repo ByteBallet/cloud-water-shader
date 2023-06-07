@@ -10,7 +10,7 @@ export const Controls = (props: any) => {
     const ref = useRef();
     const camera = useThree((state: any) => state.camera);
     const gl = useThree((state: any) => state.gl);
-    useFrame((state, delta) => ref.current.update(delta));
+    useFrame((_state, delta) => ref.current.update(delta));
 
     useEffect(() => {
         const controls = ref.current;
