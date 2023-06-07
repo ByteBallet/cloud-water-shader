@@ -43,28 +43,28 @@ export const cloudLocation = [
 
 export const backCloudPosition = [
   {
-    position: [190, -40, 2],
-    initialPos: [210, -20, 2],
-    opacity: 0.5,
-    scale: [10, 10, 5],
+    position: [190, -40, 1],
+    initialPos: [220, -20, 1],
+    opacity: 0.4,
+    scale: [7, 6, 1],
   },
   {
-    position: [100, 50, 2],
-    initialPos: [210, -20, 2],
-    opacity: 0.5,
-    scale: [8, 10, 5],
+    position: [100, 50, 1],
+    initialPos: [220, -20, 1],
+    opacity: 0.4,
+    scale: [6, 6, 1],
   },
   {
-    position: [0, -130, 2],
-    initialPos: [-20, -150, 2],
-    opacity: 0.5,
-    scale: [8, 8, 1],
+    position: [0, -130, 1],
+    initialPos: [-20, -150, 1],
+    opacity: 0.4,
+    scale: [6, 6, 1],
   },
   {
-    position: [-80, -50, 2],
-    initialPos: [-20, -150, 2],
-    opacity: 0.5,
-    scale: [8, 8, 1],
+    position: [-80, -50, 1],
+    initialPos: [-20, -150, 1],
+    opacity: 0.4,
+    scale: [6, 6, 1],
   },
 ];
 

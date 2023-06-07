@@ -8,7 +8,7 @@ function BackCloud({ cloud }: any) {
 
     useFrame(() => {
       setPosition((prevPosition:any) => {
-        if(prevPosition[0] < -220 || prevPosition[1] > 140){
+        if(prevPosition[0] < -220 || prevPosition[1] > 150){
           prevPosition[0] = cloud.initialPos[0];
           prevPosition[1] = cloud.initialPos[1];
         }
@@ -20,7 +20,7 @@ function BackCloud({ cloud }: any) {
       });
     });
   
-    return <Cloud position={pos} opacity={cloud.opacity} speed={0} scale={cloud.scale} />;
+    return <Cloud position={pos} opacity={cloud.opacity} speed={0} scale={cloud.scale} depth={1}/>;
 }
 
 export const BackgroundClouds = () => {
