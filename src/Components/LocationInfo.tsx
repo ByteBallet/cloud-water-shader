@@ -134,10 +134,10 @@ export const meshBlockLocation = [
     },
     {
       id: 6,
-      name: "air",
+      name: "marketplace",
       position: [212, 40, 1],
       area: [15, 13],
-      size: [78, 23],
+      size: [72, 23],
       flag: [1, 1],
     },
 ];
